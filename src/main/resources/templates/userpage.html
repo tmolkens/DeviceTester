@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>User management</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1><span th:text="#{userpage.title}"/><br/></h1>
+
+<table>
+    <tr>
+        <th>NAME</th>
+        <th>ROLE</th>
+        <th>PERMISSION</th>
+    </tr>
+    <tr th:each="user : ${allUsers}">
+        <td th:text="${user.firstName} + ' ' + ${user.lastName}"/>
+        <td>
+            <table>
+                <tr th:each="role : ${user.roles}">
+                    <td th:text="${role.name}"/>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <div th:each="role : ${user.roles}">
+                <table>
+                    <tr th:each="perm : ${role.permissions}">
+                        <td th:text="${perm.name}"/>
+                    </tr>
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+<BR>&nbsp;</BR>
+<div sec:authorize="hasRole('manage users')">
+    <span th:text="#{homepage.secret-message}"/>
+
+    <BR>&nbsp;</BR>
+    <div class="content">
+        <form action="#" th:action="@{/users/add}" method="POST">
+            <fieldset>
+                <legend>Add user</legend>
+                <input type="text" name="username" value="" placeholder="Username" th:field="*{user.userName}"/>
+                <input type="password" name="password" placeholder="Password" th:field="*{user.password}"/>
+                <BR>&nbsp;</BR>
+                <input type="text" name="firstname" value="" placeholder="First name" th:field="*{user.firstName}"/>
+                <input type="text" name="lastname" value="" placeholder="Last name" th:field="*{user.lastName}"/>
+                <BR>&nbsp;</BR>
+                <select th:field="${user.role}">
+                    <option th:each="role : ${allRoles}"
+                            th:value="${role.name}"
+                            th:text="${role.name}"></option>
+                </select>
+                <BR>&nbsp;</BR>
+                <input type="submit" id="create user" value="Create"
+                       class="btn btn-primary" />
+            </fieldset>
+        </form>
+        <BR>&nbsp;</BR>
+        <form name="form2" th:action="@{/users/edit}" action="#" method="POST">
+            <fieldset>
+                <legend>Edit user</legend>
+
+                <select th:field="${user.userName}">
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.userName}"
+                            th:text="${user.firstName} + ' ' + ${user.lastName}"></option>
+                </select>
+
+                <BR>&nbsp;</BR>
+                <input type="text" name="username" id="edit username" placeholder="Username" th:field="*{user.newUserName}"/>
+                <input type="password" name="password" id="edit password" placeholder="Password" th:field="*{user.password}"/>
+                <BR>&nbsp;</BR>
+                <input type="text" name="firstname" id="edit firstname" placeholder="First name" th:field="*{user.firstName}"/>
+                <input type="text" name="lastname" id="edit lastname" placeholder="Last name" th:field="*{user.lastName}"/>
+                <BR>&nbsp;</BR>
+                <select th:field="${user.role}">
+                    <option th:each="role : ${allRoles}"
+                            th:value="${role.name}"
+                            th:text="${role.name}"></option>
+                </select>
+                <BR>&nbsp;</BR>
+                <input type="submit" id="edit user" value="Edit"
+                       class="btn btn-primary" />
+            </fieldset>
+        </form>
+        <BR>&nbsp;</BR>
+        <form name="form3" th:action="@{/users/delete}" action="#" th:object="${user}" method="POST">
+            <fieldset>
+                <legend>Delete user</legend>
+                <select th:field="*{userName}">
+                    <option th:each="user : ${allUsers}"
+                            th:value="${user.userName}"
+                            th:text="${user.userName} + ': ' + ${user.firstName} + ' ' + ${user.lastName}"></option>
+                </select>
+                <BR>&nbsp;</BR>
+                <input type="submit" id="delete user" value="Delete"
+                       class="btn btn-primary" />
+            </fieldset>
+        </form>
+        <BR>&nbsp;</BR>
+    </div>
+</div>
+<span th:text="#{homepage.thymeleaf}"/> <br/>
+</body>
+</html>

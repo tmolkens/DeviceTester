@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Input device test manager</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1><span th:text="#{newuserfail.title}"/> <br/></h1>
+<BR>&nbsp;</BR>
+<form name="form6" th:action="@{/users/retry}" action="#" method="POST">
+    <span th:text="#{newuserfail.createmessage}"/><br/>
+    <BR>&nbsp;</BR>
+    <input type="submit" id="retry create user" value="Retry"
+       class="btn btn-primary" /></form>
+</body>
+</html>
